@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=setxkbmap -model pc105 -layout us -variant altgr-intl -option caps:escape
+Exec=setxkbmap -model pc105 -layout us -variant altgr-intl -option caps:escape
+StartupNotify=false
+Terminal=false
+Hidden=false

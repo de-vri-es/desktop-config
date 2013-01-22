@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=redshift -l 52:4
+Exec=redshift -l 52:4
+StartupNotify=false
+Terminal=false
+Hidden=false
