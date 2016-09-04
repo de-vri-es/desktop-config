@@ -16,9 +16,9 @@ install: | ${CONFIG_DIR} ${XMONAD_DIR}
 	cp -a home/xinitrc    ${PREFIX}/.xinitrc
 	cp -a home/gtkrc-2.0  ${PREFIX}/.gtkrc-2.0
 	cp -a xmonad/*        ${XMONAD_DIR}/
-	
+
 ${CONFIG_DIR}:
 	-mkdir -p "${CONFIG_DIR}" >/dev/null 2>&1
-	
+
 ${XMONAD_DIR}:
 	-mkdir -p "${XMONAD_DIR}" >/dev/null 2>&1
