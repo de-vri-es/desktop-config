@@ -232,7 +232,7 @@ myEventHook = docksEventHook <+> XMonad.Layout.Fullscreen.fullscreenEventHook
 
 withUrgency = UH.withUrgencyHookC UH.NoUrgencyHook UH.urgencyConfig {UH.suppressWhen = UH.Focused}
 
-barExec = "/home/maarten/.xmonad/dzen/topbar.py"
+barExec = "$HOME/.xmonad/dzen/topbar.py"
 
 screenColor :: ScreenId -> Colour Double
 screenColor 0 = toColor $ hsl 120 0.5 0.5
