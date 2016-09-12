@@ -19,4 +19,4 @@ fi
 
 xrdb .Xresources &
 dex -a &
-exec xmonad
+exec qtile

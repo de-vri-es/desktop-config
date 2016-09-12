@@ -1,0 +1,3 @@
+[submodule "hgaiser"]
+	path = hgaiser
+	url = git@github.com:de-vri-es/hgaiser-desktop-config
