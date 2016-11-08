@@ -19,4 +19,5 @@ fi
 
 xrdb .Xresources &
 dex -a &
-exec qtile
+date >> .qtile.log
+exec qtile &>> .qtile.log
