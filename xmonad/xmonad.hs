@@ -223,12 +223,8 @@ myManageHook = composeAll [
 		className =? "Xmessage"        --> doFloat,
 		(className =? "Firefox" <&&> resource =? "Dialog") --> doFloat,
 		isDialog                       --> doFloat,
-		manageDocks,
-		fullscreenManageHook
+		manageDocks
 	]
-	where role = stringProperty "WM_WINDOW_ROLE"
-
-myEventHook = docksEventHook <+> XMonad.Layout.Fullscreen.fullscreenEventHook
 
 withUrgency = UH.withUrgencyHookC UH.NoUrgencyHook UH.urgencyConfig {UH.suppressWhen = UH.Focused}
 
@@ -314,7 +310,7 @@ main = do
 		-- hooks, layouts
 		layoutHook         = myLayout,
 		manageHook         = myManageHook,
-		handleEventHook    = myEventHook <+> dynamicScreenBarEventHook createBar destroyBar,
+		handleEventHook    = dynamicScreenBarEventHook createBar destroyBar <+> docksEventHook,
 		logHook            = dynamicScreenBarLogHook,
 		startupHook        = dynamicScreenBarStartupHook createBar destroyBar
     }
