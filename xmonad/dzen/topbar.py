@@ -29,14 +29,15 @@ if not bat0.present:
 
 # Start dzen2.
 dzen_arguments = [
-	"dzen2",
+	'dzen2',
+	'-dock',
 #	"-w", str(screen_width),
-	"-h",  "16",
-	"-xs", str(screen),
-	"-ta", "l",
-	"-fg", "#dddddd",
-	"-bg", "black",
-	"-fn", font
+	'-h',  '16',
+	'-xs', str(screen),
+	'-ta', 'l',
+	'-fg', '#dddddd',
+	'-bg', "black",
+	'-fn', font
 ]
 dzen2 = subprocess.Popen(dzen_arguments, stdin=subprocess.PIPE)
 
