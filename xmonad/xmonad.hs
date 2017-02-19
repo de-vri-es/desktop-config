@@ -19,16 +19,12 @@ import XMonad.Util.Run
 import XMonad.Util.Themes
 import XMonad.Util.WorkspaceCompare
 
-import XMonad.Layout.Fullscreen
 import XMonad.Layout.Grid
-import XMonad.Layout.IM
+import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
 import XMonad.Layout.NoBorders
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.Reflect
 import XMonad.Layout.Renamed
-import XMonad.Layout.MouseResizableTile
 import XMonad.Layout.Tabbed
 
 import XMonad.Prompt
@@ -47,85 +43,107 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
 myXpConfig = greenXPConfig {
-    font = "xft:sans-10"
+	font = "xft:sans-10"
 }
 
 myWorkspaces = ["dev","doc","web", "media","mus","chat", "7", "8","9", "0"]
 
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
+myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
+		-- launch a terminal
+		((modm, xK_Return), spawn $ XMonad.terminal conf),
 
-    -- launch a terminal
-    [ ((modm, xK_Return), spawn $ XMonad.terminal conf)
-    , ((controlMask .|. mod1Mask, xK_t), spawn $ XMonad.terminal conf)
+		((controlMask .|. mod1Mask, xK_t), spawn $ XMonad.terminal conf),
 
-    -- launch application
-    , ((modm    , xK_r ), shellPrompt myXpConfig)
+		-- launch application
+		((modm    , xK_r ), shellPrompt myXpConfig),
 
-    -- close focused window
-    , ((modm    , xK_c ), kill)
+		-- close focused window
+		((modm    , xK_c ), kill),
 
-     -- Rotate through the available layout algorithms
-    , ((modm, xK_space ), sendMessage NextLayout)
+		-- Rotate through the available layout algorithms
+		((modm, xK_space ), sendMessage NextLayout),
 
-    --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+		--  Reset the layouts on the current workspace to default
+		((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf),
 
-    -- Resize viewed windows to the correct size
-    , ((modm, xK_n), refresh)
+		-- Resize viewed windows to the correct size
+		((modm, xK_n), refresh),
 
-    -- Move focus to the next window
-    , ((modm,                   xK_Tab), windows W.focusDown)
-    , ((mod1Mask,               xK_Tab), windows W.focusDown)
-    , ((mod1Mask .|. shiftMask, xK_Tab), windows W.swapDown)
+		-- Move focus to the next window
+		((modm,                   xK_Tab), windows W.focusDown),
+		((mod1Mask,               xK_Tab), windows W.focusDown),
+		((mod1Mask .|. shiftMask, xK_Tab), windows W.swapDown),
 
-    -- Start a prompt to bring a window to the front.
-    , ((modm, xK_g), windowPromptGoto myXpConfig)
+		-- Start a prompt to bring a window to the front.
+		((modm, xK_g), windowPromptGoto myXpConfig),
 
-    -- Move focus to the next window
-    , ((modm, xK_j), windows W.focusDown)
+		-- Move focus to the next window
+		((modm, xK_j), windows W.focusDown),
 
-    -- Move focus to the previous window
-    , ((modm, xK_k), windows W.focusUp)
+		-- Move focus to the previous window
+		((modm, xK_k), windows W.focusUp),
 
-    -- Move focus to the master window
-    , ((modm, xK_m), windows W.focusMaster)
+		-- Move focus to the master window
+		((modm, xK_m), windows W.focusMaster),
 
-    -- Swap the focused window and the master window
-    , ((modm .|. shiftMask, xK_m), windows W.swapMaster)
+		-- Directional navigation of windows
+		((modm, xK_Right), windowGo R True),
+		((modm, xK_Left ), windowGo L True),
+		((modm, xK_Up   ), windowGo U True),
+		((modm, xK_Down ), windowGo D True),
 
-    -- Shrink the master area
-    , ((modm, xK_semicolon), sendMessage Shrink)
+		-- Swap adjacent windows
+		((modm .|. shiftMask, xK_Right), windowSwap R True),
+		((modm .|. shiftMask, xK_Left ), windowSwap L True),
+		((modm .|. shiftMask, xK_Up   ), windowSwap U True),
+		((modm .|. shiftMask, xK_Down ), windowSwap D True),
 
-    -- Expand the master area
-    , ((modm, xK_quoteright), sendMessage Expand)
+		-- Directional navigation of screens
+		((modm .|. controlMask, xK_Right), screenGo R True),
+		((modm .|. controlMask, xK_Left ), screenGo L True),
+		((modm .|. controlMask, xK_Up   ), screenGo U True),
+		((modm .|. controlMask, xK_Down ), screenGo D True),
 
-    -- Push window back into tiling
-    , ((modm, xK_t), withFocused $ windows . W.sink)
+		-- Send window to adjacent screen
+		((modm .|. controlMask .|. shiftMask, xK_Right), windowToScreen R True),
+		((modm .|. controlMask .|. shiftMask, xK_Left ), windowToScreen L True),
+		((modm .|. controlMask .|. shiftMask, xK_Up   ), windowToScreen U True),
+		((modm .|. controlMask .|. shiftMask, xK_Down ), windowToScreen D True),
 
-    -- Increment the number of windows in the master area
-    , ((modm, xK_period), sendMessage (IncMasterN (-1)))
+		-- Swap the focused window and the master window
+		((modm .|. shiftMask, xK_m), windows W.swapMaster),
 
-    -- Deincrement the number of windows in the master area
-    , ((modm, xK_comma), sendMessage (IncMasterN 1))
+		-- Shrink the master area
+		((modm, xK_semicolon), sendMessage Shrink),
 
-    -- Toggle the status bar gap
-    -- Use this binding with avoidStruts from Hooks.ManageDocks.
-    -- See also the statusBar function from Hooks.DynamicLog.
-    --
-    , ((modm, xK_f), sendMessage ToggleStruts >> sendMessage (Toggle NOBORDERS))
+		-- Expand the master area
+		((modm, xK_quoteright), sendMessage Expand),
 
-    -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q), io (exitWith ExitSuccess) )
+		-- Push window back into tiling
+		((modm, xK_t), withFocused $ windows . W.sink),
 
-    -- Lock screen
-    , ((controlMask .|. mod1Mask, xK_l), spawn "xflock4")
+		-- Increment the number of windows in the master area
+		((modm, xK_period), sendMessage (IncMasterN (-1))),
 
-    -- Restart xmonad
-    , ((modm, xK_q), spawn "xmonad --recompile; xmonad --restart")
+		-- Deincrement the number of windows in the master area
+		((modm, xK_comma), sendMessage (IncMasterN 1)),
 
-    ]
-    ++
+		-- Toggle the status bar gap
+		-- Use this binding with avoidStruts from Hooks.ManageDocks.
+		-- See also the statusBar function from Hooks.DynamicLog.
+		--
+		((modm, xK_f), sendMessage ToggleStruts >> sendMessage (Toggle NOBORDERS)),
+
+		-- Quit xmonad
+		((modm .|. shiftMask, xK_q), io (exitWith ExitSuccess) ),
+
+		-- Lock screen
+		((controlMask .|. mod1Mask, xK_l), spawn "xflock4"),
+
+		-- Restart xmonad
+		((modm, xK_q), spawn "xmonad --recompile; xmonad --restart")
+	] ++ [
 
     --
     -- mod-[1..9], Switch to workspace N
@@ -133,88 +151,51 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     --
-    [((m .|. modm, k), windows $ f i)
+    ((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-    ++
-
+        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
+  ] ++ [
     --
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
     --
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-
-    ++
-
-    -- Switch between layers
-    [
-    -- Directional navigation of windows
-      ((modm,                 xK_Right), windowGo R True)
-    , ((modm,                 xK_Left ), windowGo L True)
-    , ((modm,                 xK_Up   ), windowGo U True)
-    , ((modm,                 xK_Down ), windowGo D True)
-
-    -- Swap adjacent windows
-    , ((modm .|. shiftMask, xK_Right), windowSwap R True)
-    , ((modm .|. shiftMask, xK_Left ), windowSwap L True)
-    , ((modm .|. shiftMask, xK_Up   ), windowSwap U True)
-    , ((modm .|. shiftMask, xK_Down ), windowSwap D True)
-
-    -- Directional navigation of screens
-    , ((modm .|. controlMask, xK_Right ), screenGo R True)
-    , ((modm .|. controlMask, xK_Left  ), screenGo L True)
-    , ((modm .|. controlMask, xK_Up    ), screenGo U True)
-    , ((modm .|. controlMask, xK_Down  ), screenGo D True)
-
-    -- Send window to adjacent screen
-    , ((modm .|. controlMask .|. shiftMask,    xK_Right ), windowToScreen R True)
-    , ((modm .|. controlMask .|. shiftMask,    xK_Left  ), windowToScreen L True)
-    , ((modm .|. controlMask .|. shiftMask,    xK_Up    ), windowToScreen U True)
-    , ((modm .|. controlMask .|. shiftMask,    xK_Down  ), windowToScreen D True)
-    ]
+        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+  ]
 
 
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
-
-    -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
-
-    -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
-
-    -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster))
-
-    -- you may also bind events to the mouse scroll wheel (button4 and button5)
-    ]
+myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $ [
+		-- mod-button1, Set the window to floating mode and move by dragging
+		((modm, button1), (\w -> focus w >> mouseMoveWindow w >> windows W.shiftMaster)),
+		-- mod-button2, Raise the window to the top of the stack
+		((modm, button2), (\w -> focus w >> windows W.shiftMaster)),
+		-- mod-button3, Set the window to floating mode and resize by dragging
+		((modm, button3), (\w -> focus w >> mouseResizeWindow w >> windows W.shiftMaster))
+	]
 
 layoutMods = mkToggle (single NOBORDERS) . avoidStruts . smartBorders
 
-defaultLayout = tiled ||| Mirror tiled ||| grid ||| Full ||| tab
- where
-  -- default tiling algorithm partitions the screen into two panes
-  tiled     = renamed [Replace "Tall"] mouseResizableTile {draggerType = BordersDragger}
-  tab       = tabbed shrinkText theme
-  grid      = renamed [Replace "Grid"] $ GridRatio (4/3)
-  theme     = defaultTheme {
-     activeColor         = "#009900",
-     activeTextColor     = "#ffffff",
-     activeBorderColor   = "#000000",
-     inactiveColor       = "#999999",
-     inactiveTextColor   = "#000000",
-     inactiveBorderColor = "#000000",
-     urgentColor         = "#000000",
-     urgentTextColor     = "#ffaa00",
-     urgentBorderColor   = "#ffaa00",
-     fontName            = "xft:sans-8"
-  }
+defaultLayout = tiled ||| Mirror tiled ||| grid ||| Full ||| tab where
+	-- default tiling algorithm partitions the screen into two panes
+	tiled = renamed [Replace "Tall"] mouseResizableTile {draggerType = BordersDragger}
+	tab   = tabbed shrinkText theme
+	grid  = renamed [Replace "Grid"] $ GridRatio (4/3)
+	theme = defaultTheme {
+		activeColor         = "#009900",
+		activeTextColor     = "#ffffff",
+		activeBorderColor   = "#000000",
+		inactiveColor       = "#999999",
+		inactiveTextColor   = "#000000",
+		inactiveBorderColor = "#000000",
+		urgentColor         = "#000000",
+		urgentTextColor     = "#ffaa00",
+		urgentBorderColor   = "#ffaa00",
+		fontName            = "xft:sans-8"
+	}
 
 myLayout = layoutMods $ defaultLayout
 
@@ -312,5 +293,5 @@ main = do
 		manageHook         = myManageHook,
 		handleEventHook    = dynamicScreenBarEventHook createBar destroyBar <+> docksEventHook,
 		logHook            = dynamicScreenBarLogHook,
-		startupHook        = dynamicScreenBarStartupHook createBar destroyBar
-    }
+		startupHook        = dynamicScreenBarStartupHook createBar destroyBar <+> docksStartupHook
+	}
