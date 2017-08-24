@@ -135,9 +135,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		--
 		((modm, xK_f), sendMessage ToggleStruts >> sendMessage (Toggle NOBORDERS)),
 
-		-- Quit xmonad
-		((modm .|. shiftMask, xK_q), io (exitWith ExitSuccess) ),
-
 		-- Lock screen
 		((controlMask .|. mod1Mask, xK_l), spawn "xflock4"),
 
