@@ -1,8 +1,8 @@
 [Desktop Entry]
 Encoding=UTF-8
 Type=Application
-Name=compton -I0 -O0 -r0
-Exec=compton -I0 -O0 -r0
+Name=compton -I0 -O0 -r0 --vsync opengl
+Exec=compton -I0 -O0 -r0 --vsync opengl
 StartupNotify=false
 Terminal=false
 Hidden=false
