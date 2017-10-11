@@ -6,6 +6,7 @@ import threading
 import battery_widget
 import xmonad_widget
 import clock_widget
+from glob import glob
 
 
 clock_offset   = 160
@@ -17,13 +18,24 @@ font = "sans-8"
 
 screen = int(sys.argv[1]) + 1 if len(sys.argv) >= 2 else 1
 
+def findAC():
+	devices = glob('/sys/class/power_supply/AC*')
+	if not devices: return None
+	return devices[0]
+
+def findBattery():
+	devices = glob('/sys/class/power_supply/BAT*')
+	if not devices: return None
+	return devices[0]
+
+
 # Create and configure widgets.
 xmonad         = xmonad_widget.XMonadWidget(sys.stdin)
-bat0           = battery_widget.BatteryWidget("/sys/class/power_supply/AC0", "/sys/class/power_supply/BAT0")
+bat0           = battery_widget.BatteryWidget(findAC(), findBattery())
 clock          = clock_widget.ClockWidget("%a %b %d %Y %H:%M:%S")
 clock.fg_color = "#ffaa00"
 
-if not bat0.present:
+if not bat0.present():
 	trayer_offset = clock_offset
 
 

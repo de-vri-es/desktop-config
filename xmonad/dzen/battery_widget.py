@@ -12,8 +12,6 @@ class BatteryWidget:
 	def __init__(self, ac, battery):
 		self.ac         = ac;
 		self.battery    = battery;
-		self.ac_present = os.path.exists(self.ac);
-		self.present    = os.path.exists(self.battery);
 		self.message    = "";
 		self.high_color     = "#009900";
 		self.mid_color      = "#aa7700";
@@ -26,7 +24,7 @@ class BatteryWidget:
 		
 		# Test supported APIs.
 		self.api = None
-		if self.present:
+		if self.battery is not None:
 			for api in _apis:
 				if (self.__check_api(api)):
 					self.api = api;
@@ -41,11 +39,14 @@ class BatteryWidget:
 	def __read_param(self, base, param):
 		with open(base + "/" + param) as file:
 			return file.read()[:-1];
-	
+
+	def present(self):
+		return self.battery is not None
+
 	# Check if the AC adapter is connected.
 	def ac_connected(self):
-		return self.ac_present and self.__read_param(self.ac, "online") == "1";
-	
+		return self.ac is not None and self.__read_param(self.ac, "online") == "1";
+
 	# Get the charge of the battery.
 	def charge(self):
 		if self.api == None:
@@ -56,12 +57,12 @@ class BatteryWidget:
 	
 	# Update the widget mesage.
 	def update(self):
-		if not self.present: return "";
-		
+		if not self.battery: return "";
+
 		charging = self.ac_connected();
 		charge   = self.charge();
 		fill     = int(round(self.bar_width * charge));
-		
+
 		color = self.low_color;
 		if charging:
 			color = self.charging_color;
