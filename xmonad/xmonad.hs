@@ -4,7 +4,6 @@ import System.IO
 
 import Numeric
 import Data.Colour
-import Data.Colour.RGB
 import Data.Colour.SRGB
 import Data.Colour.RGBSpace.HSL
 
