@@ -14,5 +14,5 @@ export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$UID}/gnupg/S.gpg-agent.ssh"
 
 xrdb .Xresources &
 gpg-connect-agent UPDATESTARTUPTTY /bye > /dev/null &
-dex -a &
+dex -a -s "$HOME/.config/autostart" &
 exec xmonad
