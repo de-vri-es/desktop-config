@@ -141,24 +141,22 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		((modm, xK_q), spawn "xmonad --recompile; xmonad --restart")
 	] ++ [
 
-    --
-    -- mod-[1..9], Switch to workspace N
-    --
-    -- mod-[1..9], Switch to workspace N
-    -- mod-shift-[1..9], Move client to workspace N
-    --
-    ((m .|. modm, k), windows $ f i)
-        | (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
-        , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
-  ] ++ [
-    --
-    -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-    -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-    --
-    ((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
-  ]
+		--
+		-- mod-[1..9], Switch to workspace N
+		--
+		-- mod-[1..9], Switch to workspace N
+		-- mod-shift-[1..9], Move client to workspace N
+		((m .|. modm, k), windows $ f i)
+			| (i, k) <- zip (XMonad.workspaces conf) ([xK_1 .. xK_9] ++ [xK_0])
+			, (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]
+	] ++ [
+		--
+		-- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
+		-- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
+		((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+			| (key, sc) <- zip [xK_w, xK_e, xK_q] [0..]
+			, (f, m) <- [(W.view, 0), (W.shift, shiftMask)]
+	]
 
 
 ------------------------------------------------------------------------
