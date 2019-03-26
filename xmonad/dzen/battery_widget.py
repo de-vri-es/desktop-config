@@ -21,7 +21,7 @@ class BatteryWidget:
 		self.empty_color_charging = "#111133"
 		self.bar_width      = 8;
 		self.bar_height     = 16;
-		
+
 		# Test supported APIs.
 		self.api = None
 		if self.battery is not None:
@@ -29,16 +29,22 @@ class BatteryWidget:
 				if (self.__check_api(api)):
 					self.api = api;
 					break;
-	
+
 	def __check_api(self, api):
 		for file in api:
 			if not os.path.exists(self.battery + "/" + file):
 				return False;
 		return True;
-	
+
 	def __read_param(self, base, param):
 		with open(base + "/" + param) as file:
 			return file.read()[:-1];
+
+	def __read_int(self, base, param):
+		param = self.__read_param(base, param)
+		if param == '':
+			return 0
+		return int(param)
 
 	def present(self):
 		return self.battery is not None
@@ -51,10 +57,10 @@ class BatteryWidget:
 	def charge(self):
 		if self.api == None:
 			return 0.0;
-		charge = int(self.__read_param(self.battery, self.api[0])[:-1]);
-		full   = int(self.__read_param(self.battery, self.api[1])[:-1]);
+		charge = self.__read_int(self.battery, self.api[0]);
+		full   = self.__read_int(self.battery, self.api[1]);
 		return min(float(charge) / full, 1.0);
-	
+
 	# Update the widget mesage.
 	def update(self):
 		if not self.battery: return "";
@@ -72,7 +78,7 @@ class BatteryWidget:
 			color = self.mid_color;
 		else:
 			color = self.low_color;
-		
+
 		self.message   = "^fg()";
 		self.message  += "^ba(70, _RIGHT)"
 		self.message  += "%02.0f%% " % (charge * 100);
@@ -86,4 +92,4 @@ class BatteryWidget:
 		self.message  += "^ib(0)";
 		self.message  += "  ";
 		return self.message;
-		
+
