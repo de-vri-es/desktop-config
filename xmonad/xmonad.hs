@@ -137,7 +137,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		((modm, xK_f), sendMessage ToggleStruts >> sendMessage (Toggle NOBORDERS)),
 
 		-- Lock screen
-		((controlMask .|. mod1Mask, xK_l), spawn "xflock4"),
+		((modm, xK_l ), spawn "slock"),
 
 		-- Restart xmonad
 		((modm, xK_q), spawn "xmonad --recompile; xmonad --restart"),
