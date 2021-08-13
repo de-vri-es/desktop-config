@@ -276,7 +276,7 @@ destroyBar _ = return ()
 main = do
 	xmonad $ withUrgency $ ewmh defaultConfig {
 		-- simple stuff
-		terminal           = "exo-open --launch TerminalEmulator",
+		terminal           = "urxvt",
 		focusFollowsMouse  = False,
 		clickJustFocuses   = False,
 		borderWidth        = 1,
