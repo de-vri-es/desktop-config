@@ -41,6 +41,8 @@ import qualified XMonad.Hooks.UrgencyHook as UH
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
+import Graphics.X11.ExtraTypes.XF86
+
 myXpConfig = greenXPConfig {
 	font = "xft:sans-10"
 }
@@ -138,7 +140,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		((controlMask .|. mod1Mask, xK_l), spawn "xflock4"),
 
 		-- Restart xmonad
-		((modm, xK_q), spawn "xmonad --recompile; xmonad --restart")
+		((modm, xK_q), spawn "xmonad --recompile; xmonad --restart"),
+
+		-- Control audio volume.
+		((0, xF86XK_AudioMute), spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle"),
+		((0, xF86XK_AudioLowerVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ -5%"),
+		((0, xF86XK_AudioRaiseVolume), spawn "pactl set-sink-volume @DEFAULT_SINK@ +5%")
 	] ++ [
 
 		--
