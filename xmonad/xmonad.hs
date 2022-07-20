@@ -180,7 +180,7 @@ defaultLayout = tiled ||| Mirror tiled ||| grid ||| Full ||| tab where
 	tiled = renamed [Replace "Tall"] mouseResizableTile {draggerType = BordersDragger}
 	tab   = tabbed shrinkText theme
 	grid  = renamed [Replace "Grid"] $ GridRatio (4/3)
-	theme = defaultTheme {
+	theme = def {
 		activeColor         = "#009900",
 		activeTextColor     = "#ffffff",
 		activeBorderColor   = "#000000",
@@ -269,7 +269,7 @@ createBar (S screen) = do
 destroyBar _ = return ()
 
 main = do
-	xmonad $ withUrgency $ ewmh defaultConfig {
+	xmonad $ withUrgency $ ewmh def {
 		-- simple stuff
 		terminal           = "urxvt",
 		focusFollowsMouse  = False,
