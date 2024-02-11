@@ -54,6 +54,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		-- launch a terminal
 		((modm, xK_Return), spawn $ XMonad.terminal conf),
 
+		((0, stringToKeysym "XF86MonBrightnessUp"), spawn "xbacklight -inc 5"),
+		((0, stringToKeysym "XF86MonBrightnessDown"), spawn "xbacklight -dec 5"),
+
 		((controlMask .|. mod1Mask, xK_t), spawn $ XMonad.terminal conf),
 
 		-- launch application
@@ -77,7 +80,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		((mod1Mask .|. shiftMask, xK_Tab), windows W.swapDown),
 
 		-- Start a prompt to bring a window to the front.
-		((modm, xK_g), windowPromptGoto myXpConfig),
+		-- ((modm, xK_g), windowPromptGoto myXpConfig),
 
 		-- Move focus to the next window
 		((modm, xK_j), windows W.focusDown),
@@ -203,7 +206,7 @@ myManageHook = composeAll [
 		manageDocks
 	]
 
-withUrgency = UH.withUrgencyHookC UH.NoUrgencyHook UH.urgencyConfig {UH.suppressWhen = UH.Focused}
+withUrgency = UH.withUrgencyHookC UH.NoUrgencyHook def {UH.suppressWhen = UH.Focused}
 
 barExec = "$HOME/.xmonad/dzen/topbar.py"
 
@@ -269,9 +272,9 @@ createBar (S screen) = do
 destroyBar _ = return ()
 
 main = do
-	xmonad $ withUrgency $ ewmh def {
+	xmonad $ withUrgency $ docks $ ewmh def {
 		-- simple stuff
-		terminal           = "urxvt",
+		terminal           = "alacritty",
 		focusFollowsMouse  = False,
 		clickJustFocuses   = False,
 		borderWidth        = 1,
@@ -287,7 +290,7 @@ main = do
 		-- hooks, layouts
 		layoutHook         = myLayout,
 		manageHook         = myManageHook,
-		handleEventHook    = dynamicScreenBarEventHook createBar destroyBar <+> docksEventHook,
+		handleEventHook    = dynamicScreenBarEventHook createBar destroyBar,
 		logHook            = dynamicScreenBarLogHook,
-		startupHook        = dynamicScreenBarStartupHook createBar destroyBar <+> docksStartupHook
+		startupHook        = dynamicScreenBarStartupHook createBar destroyBar
 	}
