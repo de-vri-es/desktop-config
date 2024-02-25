@@ -55,8 +55,12 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		-- launch a terminal
 		((modm, xK_Return), spawn $ XMonad.terminal conf),
 
-		((0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 5"),
-		((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 5"),
+		((0, xF86XK_MonBrightnessUp), spawn "brightness-ctl up 5"),
+		((0, xF86XK_MonBrightnessDown), spawn "brightness-ctl down 5"),
+		((controlMask, xF86XK_MonBrightnessUp), spawn "brightness-ctl up 1"),
+		((controlMask, xF86XK_MonBrightnessDown), spawn "brightness-ctl down 1"),
+		((shiftMask, xF86XK_MonBrightnessUp), spawn "brightness-ctl up 10"),
+		((shiftMask, xF86XK_MonBrightnessDown), spawn "brightness-ctl down 10"),
 		((0, xF86XK_AudioRaiseVolume), spawn "volume-control up 5"),
 		((0, xF86XK_AudioLowerVolume), spawn "volume-control down 5"),
 		((0, xF86XK_AudioMute), spawn "volume-control toggle-mute"),
