@@ -17,20 +17,26 @@
     idle_threshold = 120
     dmenu = /usr/bin/dmenu -p dunst:
     icon_position = left
+    icon_path = "/usr/share/icons/Arc"
+    icon_theme = "Arc"
+    enable_recursive_icon_lookup = true
 
 [urgency_low]
     background = "#002200"
     foreground = "#888888"
+    highlight  = "#00ff00"
     timeout = 10
 
 [urgency_normal]
     background = "#005500"
     foreground = "#ffffff"
+    highlight  = "#00ff00"
     timeout = 10
 
 [urgency_critical]
     background = "#00aa00"
     foreground = "#ffffff"
+    highlight  = "#00ff00"
     timeout = 0
 
 # vim: ft=cfg

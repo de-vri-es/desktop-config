@@ -9,12 +9,12 @@ import clock_widget
 from glob import glob
 
 
-clock_offset   = 160
+clock_offset   = 280
 status_offset  = clock_offset + 85
 trayer_offset  = status_offset
 
 
-font = "sans-8"
+font = "sans-7"
 
 screen = int(sys.argv[1]) + 1 if len(sys.argv) >= 2 else 1
 
@@ -44,7 +44,7 @@ dzen_arguments = [
 	'dzen2',
 	'-dock',
 #	"-w", str(screen_width),
-	'-h',  '16',
+	'-h',  '24',
 	'-xs', str(screen),
 	'-ta', 'l',
 	'-fg', '#dddddd',

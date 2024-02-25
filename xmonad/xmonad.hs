@@ -44,7 +44,8 @@ import qualified Data.Map        as M
 import Graphics.X11.ExtraTypes.XF86
 
 myXpConfig = greenXPConfig {
-	font = "xft:sans-10"
+	font = "xft:sans:size=12",
+	height = 36
 }
 
 myWorkspaces = ["dev","doc","web", "media","mus","chat", "7", "8","9", "0"]
@@ -56,6 +57,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 
 		((0, stringToKeysym "XF86MonBrightnessUp"), spawn "xbacklight -inc 5"),
 		((0, stringToKeysym "XF86MonBrightnessDown"), spawn "xbacklight -dec 5"),
+		((0, stringToKeysym "XF86AudioRaiseVolume"), spawn "volume-control up 5"),
+		((0, stringToKeysym "XF86AudioLowerVolume"), spawn "volume-control down 5"),
+		((0, stringToKeysym "XF86AudioMute"), spawn "volume-control toggle-mute"),
 
 		((controlMask .|. mod1Mask, xK_t), spawn $ XMonad.terminal conf),
 
