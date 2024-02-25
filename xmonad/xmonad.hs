@@ -60,6 +60,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
 		((0, stringToKeysym "XF86AudioRaiseVolume"), spawn "volume-control up 5"),
 		((0, stringToKeysym "XF86AudioLowerVolume"), spawn "volume-control down 5"),
 		((0, stringToKeysym "XF86AudioMute"), spawn "volume-control toggle-mute"),
+		((shiftMask, stringToKeysym "XF86AudioRaiseVolume"), spawn "volume-control mic up 5"),
+		((shiftMask, stringToKeysym "XF86AudioLowerVolume"), spawn "volume-control mic down 5"),
+		((shiftMask, stringToKeysym "XF86AudioMute"), spawn "volume-control mic toggle-mute"),
+		((0, stringToKeysym "XF86AudioMicMute"), spawn "volume-control mic toggle-mute"),
 
 		((controlMask .|. mod1Mask, xK_t), spawn $ XMonad.terminal conf),
 
