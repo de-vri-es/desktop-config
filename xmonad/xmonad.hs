@@ -45,7 +45,7 @@ import Graphics.X11.ExtraTypes.XF86
 
 myXpConfig = greenXPConfig {
 	font = "xft:sans:size=12",
-	height = 36
+	height = 24
 }
 
 myWorkspaces = ["dev","doc","web", "media","mus","chat", "7", "8","9", "0"]
