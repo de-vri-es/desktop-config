@@ -12,6 +12,7 @@ from glob import glob
 clock_offset   = 160
 status_offset  = clock_offset + 85
 trayer_offset  = status_offset
+bar_height     = 18
 
 
 font = "sans-8"
@@ -20,8 +21,12 @@ screen = int(sys.argv[1]) + 1 if len(sys.argv) >= 2 else 1
 
 def findAC():
 	devices = glob('/sys/class/power_supply/AC*')
-	if not devices: return None
-	return devices[0]
+	if len(devices) > 0:
+		return devices[0]
+	devices = glob('/sys/class/power_supply/ADP*')
+	if len(devices) > 0:
+		return devices[0]
+	return None
 
 def findBattery():
 	devices = glob('/sys/class/power_supply/BAT*')
@@ -31,20 +36,19 @@ def findBattery():
 
 # Create and configure widgets.
 xmonad         = xmonad_widget.XMonadWidget(sys.stdin)
-bat0           = battery_widget.BatteryWidget(findAC(), findBattery())
+bat0           = battery_widget.BatteryWidget(findAC(), findBattery(), bar_height)
 clock          = clock_widget.ClockWidget("%a %b %d %Y %H:%M:%S")
 clock.fg_color = "#ffaa00"
 
 if not bat0.present():
 	trayer_offset = clock_offset
 
-
 # Start dzen2.
 dzen_arguments = [
 	'dzen2',
 	'-dock',
 #	"-w", str(screen_width),
-	'-h',  '18',
+	'-h',  str(bar_height),
 	'-xs', str(screen),
 	'-ta', 'l',
 	'-fg', '#dddddd',
@@ -62,7 +66,7 @@ if screen == 1:
 		trayer_arguments = [
 			"stalonetray",
 			#"-bg",            "#000000",
-			"-i",             "16",
+			"-i",             str(bar_height),
 			"--geometry",     "1x1-" + str(trayer_offset) + "+0",
 			"--grow-gravity", "NE",
 			"--transparent",
