@@ -1,24 +1,24 @@
 import os
+from math import ceil, floor
 
 # Known battery APIs.
 _apis = [
 	["charge_now", "charge_full"],
-	["energy_now", "energy_full"]
+	["energy_now", "energy_full"],
 ]
 
 class BatteryWidget:
 	def __init__(self, ac, battery, height):
-		self.ac         = ac;
-		self.battery    = battery;
-		self.message    = "";
-		self.high_color     = "#009900";
-		self.mid_color      = "#aa7700";
-		self.low_color      = "#990000";
-		self.charging_color = "#4455ff";
+		self.ac                   = ac;
+		self.battery              = battery;
+		self.message              = "";
+		self.high_color           = "#009900";
+		self.mid_color            = "#aa7700";
+		self.low_color            = "#990000";
+		self.charging_color       = "#4455ff";
 		self.empty_color          = "#000000";
 		self.empty_color_charging = "#111133"
-		self.bar_width      = 8;
-		self.bar_height     = height;
+		self.bar_height           = height;
 
 		# Test supported APIs.
 		self.api = None
@@ -73,7 +73,9 @@ class BatteryWidget:
 
 		charging = not self.is_discharging();
 		charge   = self.charge();
-		fill     = int(round(self.bar_width * charge));
+		width    = int(round(self.bar_height / 3));
+		height   = int(floor(self.bar_height * 0.80));
+		fill     = int(round(height * charge));
 
 		color = self.low_color;
 		if charging:
@@ -85,17 +87,17 @@ class BatteryWidget:
 		else:
 			color = self.low_color;
 
-		self.message   = "^fg()";
-		self.message  += "^ba(70, _RIGHT)"
-		self.message  += "%02.0f%% " % (charge * 100);
-		self.message  += "^ba()";
-		self.message  += "^fg(%s)"   % (self.empty_color_charging if charging else self.empty_color);
-		self.message  += "^r(%dx%d)" % (self.bar_width, self.bar_height);
-		self.message  += "^p(%s)"    % -self.bar_width;
-		self.message  += "^fg(%s)"   % color;
-		self.message  += "^ib(1)";
-		self.message  += "^r(%dx%d)" % (self.bar_width, self.bar_height * charge);
-		self.message  += "^ib(0)";
-		self.message  += "  ";
+		self.message   = f"^fg()"
+		self.message  += f"^ba(70, _RIGHT)"
+		self.message  += f"{charge * 100:02.0f}% "
+		self.message  += f"^ba()"
+		self.message  += f"^fg({self.empty_color_charging})"
+		self.message  += f"^r({width}x{height})"
+		self.message  += f"^p(-{width})"
+		self.message  += f"^fg({color})"
+		self.message  += f"^ib(1)"
+		self.message  += f"^r({width}x{fill})"
+		self.message  += f"^ib(0)"
+		self.message  += f"  "
 		return self.message;
 

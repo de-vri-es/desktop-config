@@ -85,16 +85,16 @@ while True:
 	if xmonad.closed:
 		print("Input stream closed.")
 		break
-	
+
 	bat0.update()
 	clock.update()
-	
+
 	message = xmonad.message
 	message += "^p(_RIGHT)^p({})".format(-status_offset)
 	message += bat0.message
 	message += "^p(_RIGHT)^p({})".format(-clock_offset)
 	message += clock.message
-	
+
 	#print(message)
 	dzen2.stdin.write(bytes(message + "\n", "UTF-8"))
 	dzen2.stdin.flush()
