@@ -216,7 +216,7 @@ defaultLayout = tiled ||| Mirror tiled ||| grid ||| Full ||| tab where
 myLayout = layoutMods $ defaultLayout
 
 myManageHook = composeAll [
-		className =? "Xfce4-notifyd"   --> doIgnore,
+		className =? "Dunst"           --> doIgnore,
 		className =? "Xmessage"        --> doFloat,
 		(className =? "Firefox" <&&> resource =? "Dialog") --> doFloat,
 		isDialog                       --> doFloat,
