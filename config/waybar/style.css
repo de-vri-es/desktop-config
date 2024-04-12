@@ -1,0 +1,41 @@
+window#waybar {
+	background-color: #060;
+}
+
+#workspaces {
+	padding: 0;
+	margin: 0;
+}
+
+#clock.date {
+	color: #fa0;
+}
+
+#clock.time {
+	color: #fa0;
+	margin-right: 1ex;
+}
+
+#workspaces {
+	background-color: #444;
+	border-right: 0.5px solid #000;
+}
+
+#workspaces button {
+	border-radius: 0;
+	margin: 0;
+	margin: -1px;
+	background-color: #666;
+	color: #000;
+	padding: 0;
+}
+
+#workspaces button.empty {
+	background-color: #333;
+	color: #bbb;
+}
+
+#workspaces button.visible {
+	color: #fff;
+	background-color: #060;
+}

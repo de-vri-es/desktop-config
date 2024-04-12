@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Type=Application
-Name=hsetroot -solid black
-Exec=hsetroot -solid black
-StartupNotify=false
-Terminal=false
-Hidden=false

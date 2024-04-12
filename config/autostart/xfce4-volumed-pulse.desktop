@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Type=Application
-Name=xfce4-volumed-pulse
-Exec=xfce4-volumed-pulse
-StartupNotify=false
-Terminal=false
-Hidden=false

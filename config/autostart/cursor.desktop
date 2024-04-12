@@ -1,8 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Type=Application
-Name=xsetroot -cursor_name left_ptr
-Exec=xsetroot -cursor_name left_ptr
-StartupNotify=false
-Terminal=false
-Hidden=false
