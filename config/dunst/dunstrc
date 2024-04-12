@@ -2,7 +2,7 @@
     font = Monospace 8
     width = 300
     height = 300
-    offset = 0x16
+    offset = 0x24
     frame_width = 1
     frame_color = "#00ff00"
     padding = 8

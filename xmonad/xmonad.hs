@@ -44,7 +44,7 @@ import qualified Data.Map        as M
 import Graphics.X11.ExtraTypes.XF86
 
 myXpConfig = greenXPConfig {
-	font = "xft:sans:size=12",
+	font = "xft:sans:size=14",
 	height = 24
 }
 
