@@ -1,0 +1,8 @@
+[Desktop]
+Encoding=UTF-8
+Type=Application
+Name=gpg-connect-agent UPDATESTARTUPTTY /bye
+Exec=gpg-connect-agent UPDATESTARTUPTTY /bye
+StartupNotify=false
+Terminal=false
+Hidden=false

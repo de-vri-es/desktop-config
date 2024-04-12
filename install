@@ -35,6 +35,10 @@ install_config_dir_symlink() {
 
 # Install configuration files.
 install_file "$config_dir/home/gtkrc-2.0" ".gtkrc-2.0"
+mkdir -p "$HOME/bin"
+for file in bin/*; do
+	install_file "../$config_dir/$file" "bin/${file##*/}"
+done
 for file in config/autostart/*; do
 	install_file "../../$config_dir/$file" ".config/autostart/${file##*/}"
 done
