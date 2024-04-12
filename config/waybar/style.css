@@ -1,5 +1,6 @@
-window#waybar {
+#waybar {
 	background-color: #060;
+	font-family: sans-serif;
 }
 
 #workspaces {
