@@ -39,7 +39,7 @@
         "icon": true
     },
     "idle_inhibitor": {
-        "format": "{icon}",
+        "format": "{icon} ",
         "format-icons": {
             "activated": "",
             "deactivated": ""
@@ -68,10 +68,10 @@
             "warning": 30,
             "critical": 15
         },
-        "format": "{icon} {capacity}%",
-        "format-full": "{icon} {capacity}%",
+        "format": "{icon}{capacity}%",
+        "format-full": " {capacity}%",
         "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}% ",
+        "format-plugged": "{capacity}% ",
         "format-alt": "{time} {icon}",
         // "format-good": "", // An empty format will hide the module
         // "format-full": "",
@@ -79,11 +79,11 @@
     },
     "pulseaudio": {
         "scroll-step": 0,
-        "format": "{icon} {volume}% {format_source}",
-        "format-bluetooth": "{icon} {volume}% {format_source}",
-        "format-bluetooth-muted": "  {format_source}",
-        "format-muted": "  {format_source}",
-        "format-source": " {volume}%",
+        "format": "{icon} {volume}%  {format_source}",
+        "format-bluetooth": "{icon} {volume}%  {format_source}",
+        "format-bluetooth-muted": "   {format_source}",
+        "format-muted": "   {format_source}",
+        "format-source": " {volume}% ",
         "format-source-muted": "",
         "format-icons": {
             "headphone": "",
