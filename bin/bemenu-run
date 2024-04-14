@@ -1,0 +1,17 @@
+#!/bin/sh
+
+green='#00aa00'
+bright_green='#00FF00'
+dark_green='#008800'
+black='#000000'
+white='#FFFFFF'
+dark_gray='#555555'
+exec /usr/bin/bemenu-run -l 20 --scrollbar always --prompt run -n --bottom \
+	--tf "$bright_green" \
+	--ff "$bright_green" \
+	--nf "$green" \
+	--af "$green" \
+	--hf "$white" \
+	--hb "$dark_green" \
+	--scb "$dark_gray" \
+	--scf "$green" \
