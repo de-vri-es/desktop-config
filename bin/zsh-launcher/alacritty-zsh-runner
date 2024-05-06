@@ -1,0 +1,12 @@
+#!/bin/sh
+
+dir="$(cd "$(dirname "$(readlink -f "$0")")"; pwd)"
+
+OLD_DOTDIR="${ZDOTDIR-$HOME}"
+export ZDOTDIR="$dir/zdotdir"
+
+exec alacritty \
+	--class alacritty-zsh-runner \
+	--title "Run command..." \
+	--option window.dynamic_title=false \
+	-e zsh -is "$OLD_DOTDIR"
