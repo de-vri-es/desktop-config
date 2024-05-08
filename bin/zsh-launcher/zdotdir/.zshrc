@@ -4,7 +4,6 @@ if [[ -f "$ZDOTDIR/.zshrc" ]]; then
 fi
 
 preexec() {
-	echo "$!"
-	eval "$1 &|";
+	eval "$1 &|" </dev/null >/dev/null 2>/dev/null;
 	exit 0
 }
