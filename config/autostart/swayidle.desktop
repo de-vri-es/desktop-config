@@ -1,0 +1,8 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+Name=dunst
+Exec=swayidle timeout 180 'hyprctl dispatcher dpms off && swaylock'
+StartupNotify=false
+Terminal=false
+Hidden=false

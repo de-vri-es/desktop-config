@@ -43,12 +43,16 @@ for file in config/autostart/*; do
 	install_file "../../$config_dir/$file" ".config/autostart/${file##*/}"
 done
 
-for dir in hypr waybar dunst gtk-3.0; do
+for dir in hypr waybar swaylock dunst gtk-3.0; do
 	install_config_dir_symlink "$dir"
 done
 
 if ! command -v Hyprland > /dev/null; then
 	echo 'Missing command: Hyprland'
+fi
+
+if ! command -v hyprctl > /dev/null; then
+	echo 'Missing command: hyprctl'
 fi
 
 if ! command -v dunst > /dev/null; then
@@ -57,4 +61,12 @@ fi
 
 if ! command -v waybar > /dev/null; then
 	echo 'Missing command: waybar'
+fi
+
+if ! command -v swayidle > /dev/null; then
+	echo 'Missing command: swayidle'
+fi
+
+if ! command -v swaylock > /dev/null; then
+	echo 'Missing command: swaylock'
 fi
