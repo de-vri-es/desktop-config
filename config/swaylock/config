@@ -1,10 +1,19 @@
 color=333333
-inside-color=666666
+bs-hl-color=666666
 
-inside-wrong-color=BB0000
+ring-color=008800
+inside-color=666666
+text-color=BBBBBB
+text-caps-lock-color=BBBBBB
+
+ring-clear-color=BBBBBB
+inside-clear-color=666666
+text-clear-color=BBBBBB
+
 ring-wrong-color=880000
+inside-wrong-color=BB0000
 text-wrong-color=BBBBBB
 
-inside-ver-color=AA8800
 ring-ver-color=664400
+inside-ver-color=AA8800
 text-ver-color=BBBBBB
