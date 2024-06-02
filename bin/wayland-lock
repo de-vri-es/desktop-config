@@ -1,4 +1,5 @@
 #!/bin/sh
 
 swaylock --daemonize
+sleep 0.3
 hyprctl dispatcher dpms off
