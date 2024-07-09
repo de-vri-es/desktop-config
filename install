@@ -15,6 +15,7 @@ install_file() {
 			return
 		fi
 	fi
+	printf "Symlinking %s\n" "$1"
 	ln -s "$1" "$HOME/$2"
 }
 
@@ -29,6 +30,7 @@ install_config_dir_symlink() {
 		fi
 	fi
 	mkdir -p "$HOME/.config"
+	printf "Symlinking config/%s\n" "$1"
 	ln -s "../$config_dir/config/$1" "$HOME/.config/$1"
 }
 
