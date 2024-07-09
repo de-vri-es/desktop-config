@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Type=Application
 Name=dunst
-Exec=swayidle timeout 180 wayland-lock
+Exec=swayidle timeout 180 "hyprctl dispatcher dpms off" timeout 200 "swaylock --daemonize"
 StartupNotify=false
 Terminal=false
 Hidden=false
