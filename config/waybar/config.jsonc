@@ -1,5 +1,5 @@
 {
-    "height": 24,
+    "height": 20,
     "spacing": 4,
     "modules-left": [
         "hyprland/workspaces",
@@ -36,7 +36,8 @@
     },
     "hyprland/window": {
         "separate-outputs": true,
-        "icon": true
+        "icon": true,
+        "icon-size": 16
     },
     "idle_inhibitor": {
         "format": "{icon} ",
@@ -46,7 +47,7 @@
         }
     },
     "tray": {
-        "icon-size": 24,
+        "icon-size": 16,
         "spacing": 10
     },
     "clock#date": {
