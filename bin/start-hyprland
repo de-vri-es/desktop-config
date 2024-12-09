@@ -2,4 +2,7 @@
 
 cd "$HOME"
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$UID}/gnupg/S.gpg-agent.ssh"
+if [ -xf "$HOME/.start-hyprland.local" ]; then
+	source "$HOME/.start-hyprland.local"
+fi
 exec Hyprland "$@"
