@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 cd $(dirname "$0")
 config_dir="${PWD##$HOME/}"
@@ -6,43 +7,63 @@ config_dir="${PWD##$HOME/}"
 config_backup_dir="backup-$(date +%F-%H-%M-%S)";
 
 install_file() {
-	if [[ -e "$HOME/$2" || -L "$HOME/$2" ]]; then
-		if [[ "$(readlink "$HOME/$2")" != "$1" ]]; then
-			mkdir -p  "$(dirname "$config_backup_dir/$2")"
-			mv "$HOME/$2" "$config_backup_dir/$2"
-			echo "'$2' already exists. It is moved to '$config_dir/$config_backup_dir/$2'." 1>&2
-		else
+	echo "install_file"
+	destination="$HOME/$2"
+	destination_dir="$(dirname "$destination")"
+	source_file="$1"
+	link_target="$(realpath --relative-base $HOME --relative-to "$destination_dir" "$source_file")"
+
+	echo "$destination"
+	echo "$destination_dir"
+	echo "$source_file"
+	echo "$link_target"
+
+	if [[ -e "$destination" || -L "$destination" ]]; then
+		if [[ "$(readlink "$destination")" == "$link_target" ]]; then
 			return
+		else
+			mkdir -p  "$(dirname "$config_backup_dir/$2")"
+			echo "'$destination' already exists. Moving it to '$config_dir/$config_backup_dir/$2'." 1>&2
+			mv "$destination" "$config_backup_dir/$2"
 		fi
 	fi
+
 	printf "Symlinking %s\n" "$1"
-	ln -s "$1" "$HOME/$2"
+	mkdir -p "$destination_dir"
+	ln -s "$link_target" "$destination"
 }
 
 install_config_dir_symlink() {
-	if [[ -e "$HOME/.config/$1" || -L "$HOME/.config/$1" ]]; then
-		if [[ "$(readlink "$HOME/.config/$1")" != "../$config_dir/config/$1" ]]; then
-			mkdir -p "$config_backup_dir"
-			mv "$HOME/.config/$1" "$config_backup_dir/$1"
-			echo "'$1' already exists. It is moved to '$config_dir/$config_backup_dir/$1'." 1>&2
-		else
+	echo "install_config_dir_symlink"
+	destination="$HOME/.config/$1"
+	destination_dir="$(dirname "$destination")"
+	source_file="$HOME/$config_dir/config/$1"
+	link_target="$(realpath --relative-base $HOME --relative-to "$destination_dir" "$source_file")"
+
+	if [[ -e "$destination" || -L "$destination" ]]; then
+		if [[ "$(readlink "$destination")" == "$link_target" ]]; then
 			return
+		else
+			mkdir -p "$config_backup_dir"
+			mv "$destination" "$config_backup_dir/$1"
+			echo "'$1' already exists. It is moved to '$config_dir/$config_backup_dir/$1'." 1>&2
 		fi
 	fi
-	mkdir -p "$HOME/.config"
+
+	mkdir -p "$destination_dir"
 	printf "Symlinking config/%s\n" "$1"
-	ln -s "../$config_dir/config/$1" "$HOME/.config/$1"
+
+	ln -s "$link_target" "$destination"
 }
 
 
 # Install configuration files.
-install_file "$config_dir/home/gtkrc-2.0" ".gtkrc-2.0"
-mkdir -p "$HOME/bin"
+install_file "$HOME/$config_dir/home/gtkrc-2.0" ".gtkrc-2.0"
 for file in bin/*; do
-	install_file "../$config_dir/$file" "bin/${file##*/}"
+	install_file "$HOME/$config_dir/$file" "bin/${file##*/}"
 done
 for file in config/autostart/*; do
-	install_file "../../$config_dir/$file" ".config/autostart/${file##*/}"
+	install_file "$HOME/$config_dir/$file" ".config/autostart/hyprland/${file##*/}"
 done
 
 for dir in hypr waybar swaylock dunst gtk-3.0; do
