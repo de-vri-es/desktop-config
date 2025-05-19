@@ -48,7 +48,7 @@ myXpConfig = greenXPConfig {
 	height = 24
 }
 
-myWorkspaces = ["dev","doc","web", "media","mus","chat", "7", "8","9", "0"]
+myWorkspaces = ["1","2","3", "4","5","6", "7", "8","9", "0"]
 
 
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $ [
