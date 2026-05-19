@@ -2,8 +2,8 @@
     "height": 20,
     "spacing": 4,
     "modules-left": [
-        "hyprland/workspaces",
-        "hyprland/window"
+        "sway/workspaces",
+        "sway/window"
     ],
     "modules-center": [
     ],
@@ -15,9 +15,9 @@
         "clock#date",
         "clock#time"
     ],
-    "hyprland/workspaces": {
+    "sway/workspaces": {
         "disable-scroll": true,
-        "all-outputs": false,
+        "all-outputs": true,
         "warp-on-scroll": false,
         "format": " {name} ",
         "active-only": false,
@@ -34,7 +34,11 @@
             "10": []
         }
     },
-    "hyprland/window": {
+    "sway/mode": {
+        "format": "{}"
+    },
+    "sway/window": {
+        "format": "{marks} {title}",
         "separate-outputs": true,
         "icon": true,
         "icon-size": 16
