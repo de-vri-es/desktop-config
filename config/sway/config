@@ -1,0 +1,124 @@
+set $mod Mod4
+set $term alacritty
+set $menu alacritty-zsh-runner
+
+exec swayidle -w \
+         timeout 295 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+         timeout 300 'swaylock -f -c 000000' \
+         before-sleep 'swaylock -f -c 000000'
+
+output eDP-1 {
+    position 0 0
+}
+output HDMI-A-1 {
+}
+
+output "Dell Inc. DELL U4025QW 1HSPD84" {
+    scale 1.25
+}
+
+# bindswitch lid:on output eDP-1 disable
+# bindswitch lid:off output eDP-1 enable
+bindsym $mod+p output eDP-1 toggle
+
+
+for_window [app_id="alacritty-zsh-runner"] floating enable
+for_window [floating] border normal 1
+
+default_border pixel 1
+default_floating_border normal 1
+hide_edge_borders both
+
+
+bindsym $mod+Return exec $term
+bindsym $mod+c kill
+bindsym $mod+d exec $menu
+floating_modifier $mod normal
+bindsym $mod+Shift+r reload
+bindsym $mod+l exec "swaylock"
+
+# Move your focus around
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+bindsym $mod+w focus output left
+bindsym $mod+e focus output right
+
+# Move focused container around
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+w move container output left
+bindsym $mod+Shift+e move container output right
+
+# Switch to workspace
+bindsym $mod+1 exec "swaynad pull 1"
+bindsym $mod+2 exec "swaynad pull 2"
+bindsym $mod+3 exec "swaynad pull 3"
+bindsym $mod+4 exec "swaynad pull 4"
+bindsym $mod+5 exec "swaynad pull 5"
+bindsym $mod+6 exec "swaynad pull 6"
+bindsym $mod+7 exec "swaynad pull 7"
+bindsym $mod+8 exec "swaynad pull 8"
+bindsym $mod+9 exec "swaynad pull 9"
+bindsym $mod+0 exec "swaynad pull 10"
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container workspace 1
+bindsym $mod+Shift+2 move container workspace 2
+bindsym $mod+Shift+3 move container workspace 3
+bindsym $mod+Shift+4 move container workspace 4
+bindsym $mod+Shift+5 move container workspace 5
+bindsym $mod+Shift+6 move container workspace 6
+bindsym $mod+Shift+7 move container workspace 7
+bindsym $mod+Shift+8 move container workspace 8
+bindsym $mod+Shift+9 move container workspace 9
+bindsym $mod+Shift+0 move container workspace 10
+
+bindsym $mod+b splith
+bindsym $mod+v splitv
+bindsym $mod+space layout toggle splith splitv
+bindsym $mod+f fullscreen
+bindsym $mod+Shift+t floating enable
+bindsym $mod+t floating disable
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+a focus parent
+
+mode "resize" {
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+bindsym --locked XF86AudioMute exec volume-ctl output toggle-mute
+bindsym --locked XF86AudioLowerVolume exec volume-ctl output down 5
+bindsym --locked XF86AudioRaiseVolume exec volume-ctl output up 5
+bindsym --locked XF86AudioMicMute exec volume-ctl input toggle-mute
+bindsym --locked Shift+XF86AudioMute exec volume-ctl input toggle-mute
+bindsym --locked Shift+XF86AudioLowerVolume exec volume-ctl input down 5
+bindsym --locked Shift+XF86AudioRaiseVolume exec volume-ctl inpu
+bindsym --locked XF86MonBrightnessDown exec brightness-ctl down 5
+bindsym --locked XF86MonBrightnessUp exec brightness-ctl up 5
+bindsym Print exec grimshot copy anything
+bindsym Shift+Print exec grimshot copy screen
+bindsym Ctrl+Shift+Print exec grimshot --cursor copy screen
+bindsym Alt+Shift+Print exec grimshot copy active
+bindsym Ctrl+Alt+Shift+Print exec grimshot --cursor copy active
+
+bar {
+    swaybar_command waybar
+}
+
+client.focused #008800 #00aa00 #ffffff #00ff00 #008800
+client.unfocused #888888 #222222 #888888 #292d2e #222222
+
+include /etc/sway/config.d/*
