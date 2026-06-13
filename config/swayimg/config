@@ -1,0 +1,32 @@
+[general]
+mode = viewer
+overlay = no
+
+[viewer]
+preload = 10
+window = blur
+
+[list]
+order = alpha
+all = yes
+
+[info]
+show = no
+
+[gallery]
+preload = yes
+window = #000000FF
+
+[keys.viewer]
+Left = prev_file
+Right = next_file
+ScrollUp = zoom +4
+ScrollDown = zoom -4
+equal = zoom +4
+plus = zoom +4
+minus = zoom -4
+underscore = zoom -4
+R = rotate_left
+Ctrl+R = rotate_right
+V = flip_vertical
+H = flip_horizontal
