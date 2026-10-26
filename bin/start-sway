@@ -1,8 +1,11 @@
 #!/bin/sh
 
 cd "$HOME"
+
 export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR:-/run/user/$UID}/gnupg/S.gpg-agent.ssh"
-if [ -x "$HOME/.start-hyprland.local" ]; then
-	source "$HOME/.start-hyprland.local"
+
+if [ -x "$HOME/.start-sway.local" ]; then
+	source "$HOME/.start-sway.local"
 fi
+
 exec sway "$@"

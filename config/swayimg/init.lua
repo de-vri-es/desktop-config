@@ -1,15 +1,21 @@
-swayimg.enable_exif_orientation(true)
-swayimg.enable_decoration(false)
-swayimg.enable_overlay(false)
+function SHELL_ESCAPE(s)
+	return "'" .. s:gsub("'", "'\\''") .. "'"
+end
 
-swayimg.imagelist.enable_adjacent(true)
-swayimg.imagelist.set_order("alpha")
+swayimg.exif_orientation = true
+swayimg.decoration = false
+swayimg.overlay = false
 
-swayimg.viewer.set_default_scale("optimal")
-swayimg.viewer.set_text("topleft", {})
-swayimg.viewer.set_text("topright", {})
-swayimg.viewer.set_text("bottomleft", {})
-swayimg.viewer.set_text("bottomright", {})
+swayimg.imagelist.adjacent = true
+swayimg.imagelist.order = "alpha"
+
+swayimg.viewer.default_scale = "optimal"
+swayimg.viewer.text = {
+	topleft = {},
+	topright = {},
+	bottomleft = {},
+	bottomright = {},
+}
 
 swayimg.viewer.bind_reset()
 
@@ -19,21 +25,49 @@ end)
 swayimg.viewer.on_key("q", function()
 	swayimg.exit()
 end)
+swayimg.viewer.on_key("Return", function()
+	swayimg.mode = "gallery"
+end)
+swayimg.viewer.on_key("Shift+Return", function()
+	os.execute("swayimg " .. SHELL_ESCAPE(swayimg.viewer.get_image().path) .. " & disown")
+end)
+
+swayimg.gallery.on_key("Escape", function()
+	swayimg.exit()
+end)
+swayimg.gallery.on_key("q", function()
+	swayimg.exit()
+end)
+swayimg.gallery.on_key("Return", function()
+	swayimg.mode = "viewer"
+end)
+swayimg.gallery.on_key("Shift+Return", function()
+	os.execute("swayimg " .. SHELL_ESCAPE(swayimg.gallery.get_image().path) .. " & disown")
+end)
 
 swayimg.viewer.on_key("Left", function()
-	swayimg.viewer.switch_image("prev")
+	swayimg.viewer.open("prev")
 end)
 
 swayimg.viewer.on_key("Right", function()
-	swayimg.viewer.switch_image("next")
+	swayimg.viewer.open("next")
+end)
+
+swayimg.viewer.on_mouse("MouseLeft", function()
+end)
+
+swayimg.viewer.on_mouse("MouseRight", function()
+end)
+
+swayimg.viewer.on_mouse("MouseMiddle", function()
 end)
 
 swayimg.viewer.on_mouse("MouseSide", function()
-	swayimg.viewer.switch_image("prev")
+	swayimg.viewer.open("prev")
 end)
 
 swayimg.viewer.on_mouse("MouseExtra", function()
-	swayimg.viewer.switch_image("next")
+	swayimg.viewer.open("next")
 end)
 
 swayimg.viewer.on_key("R", function()
@@ -52,57 +86,69 @@ end)
 
 
 _G.manually_resized = false
+_G.scale = 1.0;
+_G.center_x = nil;
+_G.center_y = nil;
 
 swayimg.viewer.on_image_change(function()
-	reset_scale(swayimg.viewer)
+	RESET_SCALE()
 end)
 
 swayimg.on_window_resize(function()
 	if not _G.manually_resized then
-		reset_scale(swayimg.viewer)
+		RESET_SCALE()
+	else
+		local window_size = swayimg.get_window_size();
+		local center_x = math.floor(_G.center_x * window_size.width);
+		local center_y = math.floor(_G.center_y * window_size.height);
+		swayimg.viewer.set_abs_scale(_G.scale, center_x, center_y)
 	end
 end)
 
-function reset_scale(viewer, factor)
+function RESET_SCALE()
 	_G.manually_resized = false
 	swayimg.viewer.set_fix_scale("optimal")
 end
-function adjust_scale(viewer, factor)
-	_G.manually_resized = true
-	center = swayimg.get_mouse_pos()
-	scale = swayimg.viewer.get_scale() * factor
+function ADJUST_SCALE(factor)
+	local center = swayimg.get_mouse_pos()
+	local scale = swayimg.viewer.scale * factor
+	local window_size = swayimg.get_window_size();
 	scale = math.max(scale, 0.01)
-	viewer.set_abs_scale(scale, center.x, center.y)
+	_G.scale = scale;
+	_G.center_x = (center.x + 0.0) / window_size.width;
+	_G.center_y = (center.y + 0.0) / window_size.height;
+	_G.manually_resized = true
+	swayimg.viewer.set_abs_scale(scale, center.x, center.y)
 end
 
 swayimg.viewer.on_mouse("ScrollUp", function()
-	adjust_scale(swayimg.viewer, 1 * 1.04)
+	ADJUST_SCALE(1 * 1.04)
 end)
 swayimg.viewer.on_mouse("ScrollDown", function()
-	adjust_scale(swayimg.viewer, 1 / 1.04)
+	ADJUST_SCALE(1 / 1.04)
 end)
 
 swayimg.viewer.on_key("Backspace", function()
-	reset_scale(swayimg.viewer)
+	RESET_SCALE()
 end)
 swayimg.viewer.on_key("Equal", function()
-	adjust_scale(swayimg.viewer, 1 * 1.04)
+	ADJUST_SCALE(1 * 1.04)
 end)
 swayimg.viewer.on_key("Plus", function()
-	adjust_scale(swayimg.viewer, 1 * 1.04)
+	ADJUST_SCALE(1 * 1.04)
 end)
 swayimg.viewer.on_key("Shift+Plus", function()
-	adjust_scale(swayimg.viewer, 1 * 1.04)
+	ADJUST_SCALE(1 * 1.04)
 end)
 swayimg.viewer.on_key("Minus", function()
-	adjust_scale(swayimg.viewer, 1 / 1.04)
+	ADJUST_SCALE(1 / 1.04)
 end)
 
-function dirname(str)
-    return str:match("(.*/)")
-end
+-- function dirname(str)
+--     return str:match("(.*/)")
+-- end
 
-swayimg.viewer.on_file_drop(function(paths)
-	swayimg.imagelist.add(dirname(paths[1]))
-	swayimg.viewer.open(paths[1])
-end)
+-- swayimg.viewer.on_file_drop(function(paths)
+-- 	swayimg.imagelist.add(dirname(paths[1]))
+-- 	swayimg.viewer.open(paths[1])
+-- end)
