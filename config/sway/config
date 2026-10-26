@@ -24,6 +24,11 @@ output "*" {
     background #333340 solid_color
 }
 
+input "type:keyboard" {
+    xkb_layout us
+    xkb_variant altgr-intl
+}
+
 # bindswitch lid:on output eDP-1 disable
 # bindswitch lid:off output eDP-1 enable
 bindsym $mod+p output eDP-1 toggle
