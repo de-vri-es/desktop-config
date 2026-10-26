@@ -9,12 +9,19 @@ exec swayidle -w \
 
 output eDP-1 {
     position 0 0
+    background #333340 solid_color
 }
 output HDMI-A-1 {
+    background #333340 solid_color
 }
 
 output "Dell Inc. DELL U4025QW 1HSPD84" {
     scale 1.25
+    background #333340 solid_color
+}
+
+output "*" {
+    background #333340 solid_color
 }
 
 # bindswitch lid:on output eDP-1 disable
